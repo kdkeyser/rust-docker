@@ -27,6 +27,8 @@ RUN apt-get update -q && apt-get install -y --no-install-recommends \
 
 #workaround on Ubuntu 16.04 for LLDB, see https://github.com/vadimcn/vscode-lldb/wiki/Installing-on-Linux
 RUN ln -s /usr/bin/lldb-server-5.0 /usr/lib/llvm-5.0/bin/lldb-server-5.0.0
+RUN update-alternatives --install /usr/bin/lldb-server lldb-server /usr/bin/lldb-server-5.0 100
+RUN update-alternatives --install /usr/bin/lldb lldb /usr/bin/lldb-5.0 100
 
 ENV VSCODE_VERSION 1.22.2
 RUN wget -O /tmp/vscode.deb https://vscode-update.azurewebsites.net/$VSCODE_VERSION/linux-deb-x64/stable/
