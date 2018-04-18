@@ -22,7 +22,8 @@ RUN apt-get update -q && apt-get install -y --no-install-recommends \
   git \
   fish \
   curl \
-  lldb-5.0
+  lldb-5.0 \
+  kcov
 
 
 #workaround on Ubuntu 16.04 for LLDB, see https://github.com/vadimcn/vscode-lldb/wiki/Installing-on-Linux

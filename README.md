@@ -8,6 +8,7 @@ A Docker container containing:
 - Rust plugin for VSC
 - LLDB
 - LLDB plugin for VSC
+- kcov, code coverage tool
 
 docker-compose is used to build the Docker and set some environment variables. This is needed for:
 
