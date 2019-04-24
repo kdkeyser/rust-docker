@@ -1,4 +1,15 @@
-FROM ubuntu:16.04
+FROM ubuntu:18.04
+MAINTAINER Koen De Keyser <koen.dekeyser@gmail.com>
+
+ENV DEBIAN_FRONTEND noninteractive
+ENV DEBCONF_NONINTERACTIVE_SEEN true
+
+## pre-seed tzdata, update package index, upgrade packages and install needed software
+RUN echo "tzdata tzdata/Areas select Europe" > /tmp/preseed.txt; \
+    echo "tzdata tzdata/Zones/Europe select Brussels" >> /tmp/preseed.txt; \
+    debconf-set-selections /tmp/preseed.txt && \
+    apt-get update -q && \
+    apt-get install -y --no-install-recommends tzdata
 
 RUN apt-get update -q && apt-get install -y --no-install-recommends \
   sudo \
@@ -22,16 +33,22 @@ RUN apt-get update -q && apt-get install -y --no-install-recommends \
   git \
   fish \
   curl \
-  lldb-5.0 \
-  kcov
+  lcov \
+  fish \
+  tmux \
+  vim-gnome \
+  libtinfo-dev \
+  zip \
+  unzip \
+  net-tools \
+  ssh \
+  gpg-agent \
+  gnupg \
+  locales \
+  lldb
 
 
-#workaround on Ubuntu 16.04 for LLDB, see https://github.com/vadimcn/vscode-lldb/wiki/Installing-on-Linux
-RUN ln -s /usr/bin/lldb-server-5.0 /usr/lib/llvm-5.0/bin/lldb-server-5.0.0
-RUN update-alternatives --install /usr/bin/lldb-server lldb-server /usr/bin/lldb-server-5.0 100
-RUN update-alternatives --install /usr/bin/lldb lldb /usr/bin/lldb-5.0 100
-
-ENV VSCODE_VERSION 1.22.2
+ENV VSCODE_VERSION 1.33.1
 RUN wget -O /tmp/vscode.deb https://vscode-update.azurewebsites.net/$VSCODE_VERSION/linux-deb-x64/stable/
 RUN dpkg -i /tmp/vscode.deb && rm /tmp/vscode.deb && apt-get -f install
 
@@ -47,3 +64,12 @@ ENV PATH $PATH:/home/developer/.cargo/bin
 RUN rustup component add rls-preview rust-analysis rust-src
 RUN echo 0 | code --install-extension rust-lang.rust
 RUN echo 0 | code --install-extension vadimcn.vscode-lldb
+
+ENV LANG en_US.UTF-8
+ENV LC_ALL en_US.UTF-8
+ENV LANGUAGE en_US.UTF-8
+
+#workaround for fish issue: https://github.com/fish-shell/fish-shell/issues/5180
+ENV USER developer
+
+ENTRYPOINT ["/usr/bin/tmux"]

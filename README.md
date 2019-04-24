@@ -8,26 +8,25 @@ A Docker container containing:
 - Rust plugin for VSC
 - LLDB
 - LLDB plugin for VSC
-- kcov, code coverage tool
+- lcov, code coverage tool
 
-docker-compose is used to build the Docker and set some environment variables. This is needed for:
+The included bash script builds the container and runs it with a number of practical features enabled:
 
-- X11 forwarding to the host system
-- Using the .gitconfig of the host system
-- Exposing a shared directory (called "shared" in /home/developer) that allows you to keep checked out repositories between subsequent runs of the docker
-- Access SSH keys from the host system
-- Enable host IPC (required by Visual Studio Code, otherwise it hangs frequently, see https://github.com/Microsoft/vscode/issues/44385)
+- X forwarding, enables running X application in the container and get output on the X server running on the host. Useful for Visual Studio Code, Chrome, Firefox, ...
+- SSH forwarding to host system, and mapping your .gitconfig into the container: allows to use Git/SSH with the settings/keys from you host system, within the container
+- Exposes the "shared" directory in your home folder (host system) as "shared" directory in the container (/home/developer/shared)
 
-To build:
+## How to use?
 
-docker-compose build
+1. Build & run the container
 
-To run:
+./run-docker.sh
 
-./run-docker-compose.sh
+You now are logged in to the container as the developer user. By default, tmux is running as the shell. 
 
-This script makes sure that the Docker has access to the SSH keys from the host system.
+## Useful tools:
 
-To get access to a shell (after docker-compose is up and running, previous step):
+- fish (nice terminal)
+- tmux (spit screen terminal)
+- code (Visual Studio Code, has Rust / lldb plugin preinstalled)
 
-docker exec -it rustdocker_dev_1 /bin/bash
