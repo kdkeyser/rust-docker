@@ -61,7 +61,7 @@ RUN chown developer /home/developer
 USER developer 
 RUN wget -O /tmp/rustup.sh https://sh.rustup.rs && sh /tmp/rustup.sh -y
 ENV PATH $PATH:/home/developer/.cargo/bin
-RUN rustup component add rls-preview rust-analysis rust-src
+RUN rustup component add rls-preview rust-analysis rust-src rustfmt
 RUN echo 0 | code --install-extension rust-lang.rust
 RUN echo 0 | code --install-extension vadimcn.vscode-lldb
 
