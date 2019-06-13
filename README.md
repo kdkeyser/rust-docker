@@ -22,7 +22,7 @@ The included bash script builds the container and runs it with a number of pract
 
 ./run-docker.sh
 
-You now are logged in to the container as the developer user. By default, tmux is running as the shell. 
+You now are logged in to the container as the developer user (password is `developer` too). By default, `tmux` is running as a screen multiplexer, `fish` is running as the shell.
 
 ## Useful tools:
 

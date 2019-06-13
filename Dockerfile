@@ -48,7 +48,7 @@ RUN apt-get update -q && apt-get install -y --no-install-recommends \
   lldb
 
 
-ENV VSCODE_VERSION 1.33.1
+ENV VSCODE_VERSION 1.35.1
 RUN wget -O /tmp/vscode.deb https://vscode-update.azurewebsites.net/$VSCODE_VERSION/linux-deb-x64/stable/
 RUN dpkg -i /tmp/vscode.deb && rm /tmp/vscode.deb && apt-get -f install
 
@@ -57,6 +57,9 @@ RUN echo "developer:developer" | chpasswd
 RUN adduser developer sudo 
 RUN mkdir /home/developer
 RUN chown developer /home/developer
+
+# make fish the default shell
+RUN chsh -s /usr/bin/fish developer
 
 USER developer 
 RUN wget -O /tmp/rustup.sh https://sh.rustup.rs && sh /tmp/rustup.sh -y
@@ -68,6 +71,8 @@ RUN echo 0 | code --install-extension vadimcn.vscode-lldb
 ENV LANG en_US.UTF-8
 ENV LC_ALL en_US.UTF-8
 ENV LANGUAGE en_US.UTF-8
+
+
 
 #workaround for fish issue: https://github.com/fish-shell/fish-shell/issues/5180
 ENV USER developer
